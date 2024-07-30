@@ -56,13 +56,27 @@ O: Return a string
 C:
 E: The 
 */
-_.typeof 
-
-
-e;
+_.typeOf = function (value) {
+    if (value === null) {
+        return "null";
+    } else if (Array.isArray(value)) {
+        return "array";
+    } else if (typeof value === "object") {
+        return "object";
+    } else if (typeof value === "string") {
+        return "string";
+    } else if (typeof value === "number") {
+        return "number";
+    } else if (typeof value === "boolean") {
+        return "boolean";
+    } else if (typeof value === "function") {
+        return "function";
+    } else if (typeof value === "undefined") {
+        return "undefined";
+    } else {
+        return "unknown";
     }
 }
-
 
 /** _.first
 * Arguments:
@@ -81,7 +95,29 @@ e;
 *   _.first(["a", "b", "c"], 1) -> "a"
 *   _.first(["a", "b", "c"], 2) -> ["a", "b"]
 */
+/*
+I: An array A number
+O: If array is not an array return[]
+C: 
+E: What if number is negative what if number is greather array length?
+*/
 
+ _.first = function (array, number) {
+     //First  check if the input is an array
+    if (!Array.isArray(array)) {
+        return [];
+    }
+    //Now check if the number is not provided or not a number
+    if (number === undefined || typeof number !== 'number') {
+        return array[0];
+    }
+     //And finally check if the number is less than 1
+    if (number < 1) {
+        return [];
+    }
+      //Return the first number elements of the array
+    return array.slice(0, number);
+}
 
 /** _.last
 * Arguments:
@@ -100,8 +136,30 @@ e;
 *   _.last(["a", "b", "c"], 1) -> "c"
 *   _.last(["a", "b", "c"], 2) -> ["b", "c"]
 */
+/*
+I: An array and a number 
+O: If array is not an array return [] if number is not given or not a number retyr just the last element in array 
+Otherwise return the last number items of array 
+C:
+E: What if number is negative? What if number is greater than array.length
+*/
 
-
+_.last = function _last(array, number) {
+      //Lets check if the input is an array
+    if (!Array.isArray(array)) {
+        return [];
+    }
+    //Now check if the number is not provided or not a number
+    if (number === undefined || typeof number !== 'number') {
+        return array[array.length - 1];
+    }
+    //Now check if the number is less than 1
+    if (number < 1) {
+        return [];
+    }
+    //Finally return the last number elements of the array
+    return array.slice(-number);
+}
 /** _.indexOf
 * Arguments:
 *   1) An array
@@ -117,7 +175,26 @@ e;
 *   _.indexOf(["a","b","c"], "c") -> 2
 *   _.indexOf(["a","b","c"], "d") -> -1
 */
-
+/*
+I: Arguments an array a value 
+O: Return the index of array that is ithe first occurance of value 
+Return -1 if value is not in array 
+Do not use [].indexof()!
+C:
+E: What if array has multiple occurance of value? What if val isnt in array?
+*/
+_.indexOf = function _indexOf(array, value) {
+     //Iterate through each element in the array
+    for (let i = 0; i < array.length; i++) {
+        //Now see if the current element is equal to the value
+        if (array[i] === value) {
+            //Finally return the current index
+            return i;
+        }
+    }
+    //Value is not found return -1
+    return -1;
+}
 
 /** _.contains
 * Arguments:
