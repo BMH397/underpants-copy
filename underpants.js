@@ -20,7 +20,16 @@ var _ = {};
 *   _.identity(5) === 5
 *   _.identity({a: "b"}) === {a: "b"}
 */
+/*
+I: Value
+O: Returns value unchnaged 
+C: 
+E: lowercase
+*/
+_.identity = function(value){
+return value;
 
+}
 
 /** _.typeOf
 * Arguments:
@@ -41,6 +50,18 @@ var _ = {};
 * _.typeOf("javascript") -> "string"
 * _.typeOf([1,2,3]) -> "array"
 */
+/*
+I: Value
+O: Return a string 
+C:
+E: The 
+*/
+_.typeof 
+
+
+e;
+    }
+}
 
 
 /** _.first
