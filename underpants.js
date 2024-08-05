@@ -210,8 +210,27 @@ _.indexOf = function _indexOf(array, value) {
 * Examples:
 *   _.contains([1,"two", 3.14], "two") -> true
 */
-
-
+/*
+I: Array and value 
+O: Return true if array contains value, Return false otherwise, Gotta use the ternary operator 
+C:
+E: Did you use === what if no value is given 
+*/
+_.contains = function(array, value) {
+    //First lets check if value is undefined
+    if (value === undefined) {
+        return false;
+    }
+    //Now loop through the array to check for the value
+    for (let i = 0; i < array.length; i++) {
+        // Use strict equality (===) to compare
+        if (array[i] === value) {
+            return true;
+        }
+    }
+    //Finally return false if the value is not found
+    return false;
+}
 /** _.each
 * Arguments:
 *   1) A collection
@@ -226,6 +245,13 @@ _.indexOf = function _indexOf(array, value) {
 * Examples:
 *   _.each(["a","b","c"], function(e,i,a){ console.log(e)});
 *      -> should log "a" "b" "c" to the console
+*/
+/*
+I: Collection and Function 
+O: If collection is an array call function oncefor each element with the arguments the element its indec collection 
+If collection is an object call function once for each property with the arguments the properts value its key collection
+C:
+E:
 */
 
 
