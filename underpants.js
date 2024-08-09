@@ -254,6 +254,29 @@ C:
 E:
 */
 
+_.each = function(collection, iteratee) {
+   if (Array.isArray(collection)) {
+       //Now iff collection is an array
+       for (let i = 0; i < collection.length; i++) {
+           //Now all iteratee with arguments
+           iteratee(collection[i], i, collection);
+       }
+   } else {
+       //For each key in collection
+       for (let key in collection) {
+          //If the key has an own property of collection
+
+
+           if (collection.hasOwnProperty(key)) {
+               //Call iteratee with arguments
+               iteratee(collection[key], key, collection);
+           }
+       }
+   }
+};
+
+
+
 
 /** _.unique
 * Arguments:
@@ -264,7 +287,43 @@ E:
 * Examples:
 *   _.unique([1,2,2,4,5,6,5,2]) -> [1,2,4,5,6]
 */
+/*
+I: An Array
+O: Return a new array of all elements from array with dups removed
+Use _.indexof()
+C:
+E:
+*/
 
+//_.indexOf function
+_.indexOf = function(array, value) {
+    //First loop through each element in the array
+    for (let i = 0; i < array.length; i++) {
+       //Now if the current element matches the value
+        if (array[i] === value) {
+            //Return the index of the element
+            return i;
+        }
+    }
+    //And if the value is not found return -1
+    return -1;
+ };
+ //_.unique function
+ _.unique = function(array) {
+   //Make an empty array to store unique elements
+    const result = [];
+   //Now loop through each element in the input array
+    _.each(array, function(value) {
+        //And if the element is not already in the result array
+        if (_.indexOf(result, value) === -1) {
+            //Add the element to the result array by using push
+            result.push(value);
+        }
+    });
+    //Finally return array
+    return result;
+ };
+ 
 
 /** _.filter
 * Arguments:
@@ -281,6 +340,33 @@ E:
 * Extra Credit:
 *   use _.each in your implementation
 */
+/*
+I: An array a function
+O: Call function for each element in array passing the arguments the element its index array
+C: Return a new array of elements for which calling function returned true
+E: What if function returns something other than true or false
+*/
+
+_.filter = function(array, predicate) {
+  
+    //Make an empty array to store
+    const result = [];
+    //First loop through each element in the array using _.each
+    _.each(array, function(value, index, collection) {
+        //And if the predicate returns true for the element
+        if (predicate(value, index, collection)) {
+             //Now add the element to the result array using push
+            result.push(value);
+        }
+    });
+    //Finally retrn the array with elements
+    return result;
+ };
+ 
+ 
+ 
+
+
 
 
 /** _.reject
@@ -295,7 +381,29 @@ E:
 * Examples:
 *   _.reject([1,2,3,4,5], function(e){return e%2 === 0}) -> [1,3,5]
 */
+/*
+I: An array and function
+O: Call function for each element in array passing the arguments the element its index array
+C: Return a new array of elements for which calling function returned false
+E:
+*/
 
+
+_.reject = function(array, predicate) {
+    //Make an empty array to store the rejected elements
+    const result = [];
+    //Now loop through each element in the array using _.each
+    _.each(array, function(value, index, collection) {
+        //And if the predicate returns false for the current element
+        if (!predicate(value, index, collection)) {
+            //Add the current element to the result array using push
+            result.push(value);
+        }
+    });
+    //Finally return 
+    return result;
+ };
+ 
 
 /** _.partition
 * Arguments:
@@ -315,7 +423,34 @@ E:
 *   }); -> [[2,4],[1,3,5]]
 }
 */
+/*
+I: An array a function
+O: Call function for each element in array pssing it the aruguments element key array
+C: Return an array that is made of 2 sub arrays
+E: This is going to return an array of arrays
+*/
 
+
+
+_.partition = function(array, predicate) {
+    //Make two empty arrays to store truthy and falsy element
+     const truthy = [];
+     const falsy = [];
+     //Now loop through each element in the array using _.each
+     _.each(array, function(value, index, collection) {
+         //Now if the predicate returns true for the element
+         if (predicate(value, index, collection)) {
+             //Then add the element to the truthy array using push
+             truthy.push(value);
+         } else {
+             //Then add the element to the falsy array using push
+             falsy.push(value);
+         }
+     });
+     //Return an array containing the truthy and falsy arrays
+     return [truthy, falsy];
+  };
+  
 
 /** _.map
 * Arguments:
@@ -332,6 +467,28 @@ E:
 * Examples:
 *   _.map([1,2,3,4], function(e){return e * 2}) -> [2,4,6,8]
 */
+/*
+I: A collection a function
+O: Call function for each element in collection passing the arguments listed above with 2 if statements
+C: Save the return value of each function call in a new array
+E:
+*/
+
+
+
+_.map = function(collection, iteratee) {
+    //Make an empty array to store the results
+   const result = [];
+   //Now loop through each element in the collection using _.each
+   _.each(collection, function(value, index, coll) {
+   //Iteratee to the element and add the result to the result array using push
+
+
+       result.push(iteratee(value, index, coll));
+   });
+   //Finally return the array containing the results
+   return result;
+};
 
 
 /** _.pluck
@@ -344,6 +501,22 @@ E:
 * Examples:
 *   _.pluck([{a: "one"}, {a: "two"}], "a") -> ["one", "two"]
 */
+/*
+I: An array of objects/ a property
+O: Return an array containing the value of property for every element in the array
+C: You must use _.map in the implementation
+E:
+*/
+
+
+
+_.pluck = function(array, property) {
+    //Now use _.map to iterate over each object in the array
+   return _.map(array, function(obj) {
+       //Now return the value of the property from each object
+       return obj[property];
+   }); 
+};
 
 
 /** _.every
@@ -366,6 +539,36 @@ E:
 *   _.every([2,4,6], function(e){return e % 2 === 0}) -> true
 *   _.every([1,2,3], function(e){return e % 2 === 0}) -> false
 */
+/*
+I: Collection and Function 
+O: Call function for every element of collection with the paramaters listed above 
+C: If the return value of calling function for every element is true return true. If even one of them returns false return false. 
+If function is not provided return true if eveny element is truthy otherwise return false 
+E: What if function doesnt return a boolean and what if function is not given 
+*/
+
+_.every = function(collection, predicate) {
+    let result = true;
+
+    // If no predicate is provided use a default function that checks for truthyiness?
+    const checkFunction = predicate || function(value) {
+        return !!value;
+    };
+     //Now loop through each element in the collection using _.each
+    _.each(collection, function(value, index, coll) {
+        //Now if the checkFunction returns false for the current element
+        if (!checkFunction(value, index, coll)) {
+             //Result to false
+            result = false;
+            return false; 
+        }
+    });
+    //Finally return result 
+    return result;
+};
+
+
+
 
 
 /** _.some
@@ -388,6 +591,40 @@ E:
 *   _.some([1,3,5], function(e){return e % 2 === 0}) -> false
 *   _.some([1,2,3], function(e){return e % 2 === 0}) -> true
 */
+/*
+I: Collection and Function 
+O: Call function for every element of collection withthe parameters if collection is an array current element its index collection 
+if collection is an object current value current key collection 
+C: If the return value of calling function is true for at least one element return true 
+If it is false for all elements retuen false. If function is not provided return true if at least one element is truthy otherwise return false
+E: What if function doesnt return a boolean What if function is not givven 
+*/
+
+
+_.some = function(collection, predicate) {
+    let result = false;
+
+    //So if no predicate is provided use a default function that checks for truthyiness
+    const checkFunction = predicate || function(value) {
+        return !!value;
+    };
+   //Now loop through each element in the collection using _.each
+    _.each(collection, function(value, index, coll) {
+        //And if the checkFunction returns true for the current element
+        if (checkFunction(value, index, coll)) {
+           //Now result to true
+            result = true;
+            
+            return false; // Break out of the loop
+        }
+    });
+    //Finally return result
+    return result;
+};
+
+
+
+
 
 
 /** _.reduce
@@ -408,6 +645,35 @@ E:
 * Examples:
 *   _.reduce([1,2,3], function(previousSum, currentValue, currentIndex){ return previousSum + currentValue }, 0) -> 6
 */
+/*
+I: An Array Function A seed 
+O: Call function for every element in collection passing the arguments previous result element index
+C: Use the return value of function as the previous result for the next iteration. On the very first iteration use seed as the previous result.
+If no seed was given use the first element value of collection as seed and continue to the next eleemnt. After the last iteration return the value ofthe final function call.
+E: What if seed is not given 
+*/
+
+
+_.reduce = function(collection, iteratee, seed) {
+    //Now check if seed is provided
+    let hasSeed = arguments.length > 2; 
+    //Use seed or first element
+    let result = hasSeed ? seed : collection[0]; 
+    
+
+    //Now start from 0 if seed is provided else 1
+    let startIndex = hasSeed ? 0 : 1; 
+
+    _.each(collection, function(value, index, coll) {
+        if (index >= startIndex) {
+            result = iteratee(result, value, index);
+        }
+    });
+
+    return result;
+};
+
+
 
 
 /** _.extend
@@ -424,6 +690,30 @@ E:
 *   _.extend(data, {b:"two"}); -> data now equals {a:"one",b:"two"}
 *   _.extend(data, {a:"two"}); -> data now equals {a:"two"}
 */
+/*
+I: An object an object ....Possibly more objects?LOL
+O: Copy properties from object 2 to object 1. if more objects are passed in copy their properties to object 1 as well in the order they are passed in 
+C: Return the update object 1 
+E:
+*/
+
+_.extend = function(target, ...sources) {
+    //Now loop through each source object in sources using _.each
+    _.each(sources, function(source) {
+       //Then loop through each key-value pair in the source object using _.each
+        _.each(source, function(value, key) {
+            //Now copy the value to the target object under the same key
+            target[key] = value;
+        });
+    });
+    //Finally return updated target 
+    return target;
+};
+
+
+
+
+
 
 //////////////////////////////////////////////////////////////////////
 // DON'T REMOVE THIS CODE ////////////////////////////////////////////
